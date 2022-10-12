@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(title: Text("Reminders")),
+        appBar: AppBar(title: const Text("Reminders")),
         body: HomePage(),
       ),
     );

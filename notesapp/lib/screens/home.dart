@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:notesapp/domain/loadingCircle.dart';
+import 'package:notesapp/domain/textBox.dart';
+// import 'package:flutter/src/widgets/container.dart';
+// import 'package:flutter/src/widgets/framework.dart';
 import 'package:notesapp/global/color_constants.dart';
 import 'package:notesapp/domain/button.dart';
-import '';
+import 'package:notesapp/services/google_sheets_api.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,15 +18,51 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      setState(() {});
+    });
+  }
+
+  void loadNotes() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (!GoogleSheetsApi.loading) {
+        setState(() {
+          timer.cancel();
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    // start loading until data is received
+    if (GoogleSheetsApi.loading) {
+      setState(() {
+        loadNotes();
+      });
+    }
+
     return Scaffold(
       backgroundColor: ColorConst.wBackground,
       body: Column(children: [
         Expanded(
-          child: Container(
-            color: Colors.grey[700],
-          ),
+          child: GoogleSheetsApi.loading
+              ? const LoadingCircle()
+              : Expanded(
+                  child: GridView.builder(
+                    itemCount: GoogleSheetsApi.currentNotes.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4),
+                    itemBuilder: (BuildContext context, index) {
+                      return TextBox(text: GoogleSheetsApi.currentNotes[index]);
+                    },
+                  ),
+                ),
         ),
         Container(
           child: Column(
@@ -40,11 +80,15 @@ class _HomePageState extends State<HomePage> {
                     )),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Button(
-                    text: "R E M I N D",
-                    // function: _remind(),
+                    text: "R E D",
+                    function: () {
+                      print(_controller.text);
+                      post();
+                      setState(() {});
+                    },
                   ),
                 ],
               )
@@ -56,8 +100,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   // functions
-
-  void _remind() {
-    print(_controller.text);
+  post() {
+    GoogleSheetsApi.insert(_controller.text);
   }
 }
