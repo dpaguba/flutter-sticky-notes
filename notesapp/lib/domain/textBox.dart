@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notesapp/global/color_constants.dart';
 
 class TextBox extends StatelessWidget {
   final String text;
@@ -13,9 +14,24 @@ class TextBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         child: Container(
           padding: const EdgeInsets.all(10),
-          color: Colors.grey[700],
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                ColorConst.gradientStart,
+                ColorConst.gradientEnd,
+              ])),
           child: Center(
-            child: Text(text),
+            child: Text(
+              text,
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 16,
+                color: ColorConst.emphasized,
+              ),
+            ),
           ),
         ),
       ),

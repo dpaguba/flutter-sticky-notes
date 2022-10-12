@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/src/widgets/container.dart';
-// import 'package:flutter/src/widgets/framework.dart';
+import 'package:notesapp/global/color_constants.dart';
 
 class Button extends StatelessWidget {
   final text;
   final function;
 
   const Button({
-    // super.key,
     this.text,
     this.function,
   });
@@ -22,10 +20,14 @@ class Button extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           child: Container(
             padding: const EdgeInsets.all(10),
-            color: Colors.pink,
+            color: ColorConst.emphasized,
             child: Text(
               text,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(
+                color: ColorConst.textColor,
+                fontFamily: "Lobster",
+                fontSize: 20,
+              ),
             ),
           ),
         ),

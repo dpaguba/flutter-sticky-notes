@@ -6,12 +6,10 @@ class LoadingCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Expanded(
-        child: Container(
-          height: 25,
-          width: 25,
-          child: const CircularProgressIndicator(),
-        ),
+      child: Container(
+        height: 25,
+        width: 25,
+        child: const CircularProgressIndicator(),
       ),
     );
   }
