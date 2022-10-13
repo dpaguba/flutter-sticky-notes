@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: "Open Sans"),
+      theme: ThemeData(
+        fontFamily: "Open Sans",
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text(

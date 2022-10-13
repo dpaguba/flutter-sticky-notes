@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:notesapp/domain/loadingCircle.dart';
 import 'package:notesapp/domain/textBox.dart';
 import 'package:notesapp/global/color_constants.dart';
-import 'package:notesapp/domain/button.dart';
+// import 'package:notesapp/domain/button.dart';
 import 'package:notesapp/services/google_sheets_api.dart';
 
 class HomePage extends StatefulWidget {
@@ -72,15 +72,22 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: TextField(
                     controller: _controller,
-                    onChanged: (value) {
-                      entered = _controller.text.isNotEmpty ? true : false;
+                    onTap: () {
+                      setState(() {
+                        entered = true;
+                      });
                     },
                     onSubmitted: (value) {
                       print(_controller.text);
                       post();
                       _controller.clear();
+                      entered = !entered;
                     },
-                    style: const TextStyle(color: ColorConst.textColor),
+                    cursorColor: ColorConst.gradientEnd,
+                    style: const TextStyle(
+                      color: ColorConst.textColor,
+                      fontSize: 16,
+                    ),
                     decoration: InputDecoration(
                       enabledBorder: const OutlineInputBorder(
                         borderSide:
@@ -90,8 +97,10 @@ class _HomePageState extends State<HomePage> {
                         borderSide:
                             BorderSide(width: 0, color: Colors.transparent),
                       ),
-                      hintText: "enter ...",
-                      suffixIcon: switchIcons(),
+                      hintText: "remind me...",
+                      hintStyle: const TextStyle(
+                          color: ColorConst.textColor, fontSize: 16),
+                      suffixIcon: clear(),
                     ),
                   ),
                 ),
@@ -108,7 +117,7 @@ class _HomePageState extends State<HomePage> {
     GoogleSheetsApi.insert(_controller.text);
   }
 
-  switchIcons() {
+  clear() {
     return entered
         ? IconButton(
             color: ColorConst.textColor,
@@ -118,12 +127,6 @@ class _HomePageState extends State<HomePage> {
               entered = !entered;
             },
           )
-        : IconButton(
-            color: Colors.transparent,
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              _controller.clear();
-            },
-          );
+        : null;
   }
 }
